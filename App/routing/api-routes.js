@@ -16,10 +16,10 @@ exports.getFriends = app.get('/api/friends', function(req, res) {
 // When /api/friends is visited, use "post" to find the best match and export
 exports.postFriends = app.post('/api/friends', function(req, res) {
 	
-	// Hold the user's info
+	// Hold the survey user's info
 	var newUser = req.body;
 
-	// Assume the first friend in the users array in friends.js is the best match
+	// Begin by assuming the first friend in the users array in friends.js is the best match
 	var friendMatch = 0;
 
 	// Hold the lowest score.  The best match is determined when the lowest score is closest to user's score
@@ -57,7 +57,7 @@ exports.postFriends = app.post('/api/friends', function(req, res) {
 	// Push the new user (from survey) to the users list in friends.js
 	users.friends.push(newUser);
 
-	// Return the friendMatch to be used in module on survey page
+	// Return the friendMatch to be used in modal on survey page
 	res.send(users.friends[friendMatch]);
 });
 
