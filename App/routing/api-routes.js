@@ -33,7 +33,7 @@ exports.postFriends = app.post('/api/friends', function(req, res) {
 	}
 
 	// Check if any other users have a lower score than the current best match
-	for (var i = 1; i < users.friends.length; i++) {
+	for (var i = 1; i < users.friends[i].length; i++) {
 
 		// Hold the value of the score of the current friend chosen
 		var newScore = 0;
@@ -45,7 +45,11 @@ exports.postFriends = app.post('/api/friends', function(req, res) {
 
 		// if the newScore of the differences in scores is lower than the current low score, then assign the newScore to lowScore
 		if (lowScore > newScore) {
+
+			// if lowScore is greater than newScore, replace lowScore with newScore
 			lowScore = newScore;
+
+			// Current friendMatch is the index of the current user
 			friendMatch = i;
 		};
 	} 
