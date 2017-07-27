@@ -10,16 +10,18 @@ var PORT = process.env.PORT || 8000;
 var app = express();
 
 // Require routes
-var htmlRoutes = require('./app/routing/html-routes.js');
-var apiRoutes = require('./app/routing/api-routes.js');
+var htmlroutes = require('./App/routing/html-routes.js');
+var apiroutes = require('./App/routing/api-routes.js');
 
 // Use get routes for home and survey
-app.use('/', htmlRoutes.home);
-app.use('/', htmlRoutes.survey);
+app.use('/', htmlroutes.home); // diplays home.html
+app.use('/', htmlroutes.survey); // displays suvery.html
 
-// Use get routes for home and survey
-app.use('/', apiRoutes.getFriends);
-app.use('/', apiRoutes.postFriends);
+
+// // Use get routes for api data
+app.use('/', apiroutes.getUsers);
+
+// app.use('/api', apiroutes.postFriends);
 
 // Server listening
 app.listen(PORT);

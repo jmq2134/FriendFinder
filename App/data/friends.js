@@ -1,5 +1,5 @@
-// Hold all friend users
-var users = [
+// Hold all friend users and export
+exports.users = [
 	{
 		name: "Zach",
 		scores: [5, 1, 4, 4, 5, 1, 2, 5, 4, 1]
@@ -31,5 +31,3 @@ var users = [
 	}
 ]
 
-// Export users
-module.exports = users;

@@ -2,20 +2,21 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var users = require('../data/friends.js')
 
 // Connect to express server
 var app = express();
 
-// When /api/friends is visited, use "get" to display JSON data and export
-exports.getFriends = app.get('/api/friends', function(req, res) {
-	
-	// Display JSON user data from response
-	res.json(users.friends);
+// Import friends from friends.js
+var users = require('../data/friends.js');
+
+// When /api/friends is visited, use "get" to display JSON data and export users data
+exports.getUsers = app.get("/api/friends", function(req, res) {
+	return res.json(users);
+	console.log(users);
 });
 
 // When /api/friends is visited, use "post" to find the best match and export
-exports.postFriends = app.post('/api/friends', function(req, res) {
+exports.postUsers = app.post('/api/friends', function(req, res) {
 	
 	// Hold the survey user's info
 	var newUser = req.body;
@@ -23,7 +24,8 @@ exports.postFriends = app.post('/api/friends', function(req, res) {
 	// Begin by assuming the first friend in the users array in friends.js is the best match
 	var friendMatch = 0;
 
-	// Hold the lowest score.  The best match is determined when the lowest score is closest to user's score
+	// Hold the lowest score.  
+	// The best match is determined when the lowest score is closest to user's score
 	var lowScore;
 
 	// Find the score of the first friend and set to lowScore
