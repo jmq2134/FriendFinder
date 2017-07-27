@@ -9,19 +9,25 @@ var PORT = process.env.PORT || 8000;
 // Connect to express server
 var app = express();
 
-// Require routes
-var htmlroutes = require('./App/routing/html-routes.js');
-var apiroutes = require('./App/routing/api-routes.js');
+// Sets up the Express app to handle data parsing
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.text());
+app.use(bodyParser.json({type:'application/vnd.api+json'}));
+app.use(express.static('app/public'));
+app.use('/', express.static(__dirname + '/app/public'));
 
-// Use get routes for home and survey
+// HTML Routes
+var htmlroutes = require('./App/routing/html-routes.js');
+
 app.use('/', htmlroutes.home); // diplays home.html
 app.use('/', htmlroutes.survey); // displays suvery.html
 
+// API Routes
+var apiroutes = require('./App/routing/api-routes.js');
 
-// // Use get routes for api data
-app.use('/', apiroutes.getUsers);
-
-// app.use('/api', apiroutes.postFriends);
+app.use('/', apiroutes.apiGet); 
+app.use('/', apiroutes.apiPost);
 
 // Server listening
 app.listen(PORT);

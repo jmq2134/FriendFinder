@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Chosen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
     <!-- BOOTSTRAP -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
@@ -32,7 +35,7 @@
                         <form role="form">
                             <div class="form-group">
                                 <label for="userName">Name</label>
-                                <input type="text" class="form-control" id="userName" placeholder="Enter name">
+                                <input type="text" class="form-control" id="name" placeholder="Enter name">
                             </div>
                             <div class="form-group">
                                 <label for="question1">
@@ -147,6 +150,7 @@
                             </div>
                         </form>
                         <hr>
+                        <!-- SUBMIT BUTTON -->
                         <div class="text-right">
                             <button type="submit" class="btn btn-primary btn-md" id="submit-btn"><span class="glyphicon glyphicon-fire"></span> Submit</button>
                         </div>
@@ -156,17 +160,16 @@
         </div>
     </div>
     <!-- Modal -->
-    <div id="resultsModal" class="modal fade" role="dialog" style="text-align: center;">
+    <div id="resultsModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h2 class="modal-title"><strong>Best Match</strong></h2>
+                    <h2 class="modal-title"><strong>You have a new friend!</strong></h2>
                 </div>
                 <div class="modal-body">
                     <h2 id="matchName"></h2>
-                    <img id="matchImg" src="" alt="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -176,24 +179,32 @@
     </div>
     <!-- SUMBIT BUTTON TO OPEN MODAL -->
     <script type="text/javascript">
-    $('#submit-btn').click(function() {
+    // Capture the form inputs 
+    $("#submit-btn").on("click", function() {
 
-        var userInput = {
-            name: $("#name"),
-            scores: [$("#question1").val(), $("#question2").val(), $("#question3").val(), $("#question4").val(), $("#question5").val(), $("#question6").val(), $("#question7").val(), $("#question8").val(), $("#question9").val(), $("#question10").val()]
+        // NEED TO VALIDATE FORM!
+
+        // Create an object for the survey user's data
+        var surveyFriend = {
+            name: $("#name").val(),
+            scores: [$("#question1").val(), $("#question2").val(), $("#question3").val(), $("#question4").val(), $("#question5").val(), $("#question6").val(), $("#question7").val(), $("#question8").val(), $("#question9").val(), $("#question10").val(), ]
         }
 
-        console.log(userInput);
+        console.log(surveyFriend);
 
+        // Website URL
         var currentURL = window.location.origin;
 
-        console.log(currentURL);
+        // Stored in friends api
+        $.post(currentURL + '/api/friends', surveyFriend, function(data) {
 
-        $.post(currentURL + "/api/friends", userInput, function(data) {
-            $('.modal-body').html(data.name);
-            $('#myModal').modal('show');
-        })
-        return false;
+            // Display best match's name
+            $("#matchName").text(data.name);
+
+            // Show the modal with the best match 
+            $("#resultsModal").modal('toggle');
+
+        });
     });
     </script>
 </body>
