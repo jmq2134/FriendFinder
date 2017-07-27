@@ -1,7 +1,7 @@
 // Hold all friend users
 var users = [
 	{
-		name: "Zach",,
+		name: "Zach",
 		scores: [5, 1, 4, 4, 5, 1, 2, 5, 4, 1]
 	},
 	

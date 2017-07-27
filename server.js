@@ -4,21 +4,23 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 //Define port
-var PORT = 8000;
+var PORT = process.env.PORT || 8000;
 
+// Connect to express server
 var app = express();
 
-// Handle data parsing with Express
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.text());
-app.use(bodyParser.json({type:'application/vnd.api+json'}));
-app.use(express.static('app'));
-
 // Require routes
-require("./app/routing/api-routes")(app);
-require("./app/routing/html-routes")(app);
+var htmlRoutes = require('./app/routing/html-routes.js');
+var apiRoutes = require('./app/routing/api-routes.js');
+
+// Use get routes for home and survey
+app.use('/', htmlRoutes.home);
+app.use('/', htmlRoutes.survey);
+
+// Use get routes for home and survey
+app.use('/', apiRoutes.getFriends);
+app.use('/', apiRoutes.postFriends);
 
 // Server listening
-app.listen(process.env.PORT || 8000);
-console.log('Listening on port %d', PORT);
+app.listen(PORT);
+console.log("App listening on PORT " + PORT);
