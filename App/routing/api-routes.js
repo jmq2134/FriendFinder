@@ -7,9 +7,11 @@ var express = require('express');
 
 var app = express.Router();
 
+
 // Show all friends
 app.get('/friends', function(req, res) {
   res.json(friends);
+
 });
 
 app.post('/friends', function(req, res) {
