@@ -4,14 +4,16 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 // Connect to express server
-var app = express();
+var app = express.Router();
 
 // If the URL ends with /survey, display survey.html
-exports.survey = app.get("/survey", function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/survey.html"));
+app.get("/survey", function(req, res) {
+  res.sendFile(path.join(__dirname, "../public/survey.html"));
 })
 
 // Else display home.html
-exports.home = app.use(function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/home.html"));
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "../public/home.html"));
 })
+
+module.exports = app;

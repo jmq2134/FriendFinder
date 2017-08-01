@@ -5,56 +5,56 @@ var friends = require('../data/friends.js');
 var path = require('path');
 var express = require('express');
 
-var app = express();
-
+var app = express.Router();
 
 // Show all friends
-exports.apiGet = app.get('/api/friends', function(req, res) {
-    res.json(friends.friends);
-    console.log(friends.friends);
+app.get('/friends', function(req, res) {
+  res.json(friends);
 });
 
-exports.apiPost = app.post('/api/friends', function(req, res) {
+app.post('/friends', function(req, res) {
 
-    // Hold friend variables
-    var surveyFriend = req.body;
-    var surveyName = surveyFriend.name;
-    var surveyScores = surveyFriend.scores;
+  // Hold friend variables
+  var surveyFriend = req.body;
+  var surveyName = surveyFriend.name;
+  var surveyScores = surveyFriend.scores;
 
-    console.log(surveyFriend);
+  console.log(surveyFriend);
 
-    // Best match variable - start at friend 0
-    var bestMatch = {
-        name: "",
-        diff: 100
+  // Best match variable - start at friend 0
+  var bestMatch = {
+    name: "",
+    diff: 100
+  }
+
+  var scoreDiff = 0;
+
+  // 1st Loop: Loop through all friends to check for best match
+  for (var i = 0; i < friends.length; i++) {
+
+    scoreDif = 0;
+
+    // 2nd Loop: Loop through each friend's scores and check against surveyFriend
+    for (var j = 0; j < friends[i].scores[j]; j++) {
+
+      // Calculate the difference between survey scores and friend scores
+      scoreDif += Math.abs(parseInt(surveyScores[j]) - parseInt(friends[i].scores[j]));
+
+      // If the sum of differences is less then the differences of the current "best match"
+      if (scoreDif <= bestMatch.diff) {
+
+        // Replace bestMatch with current friend
+        bestMatch.name = friends[i].name;
+        bestMatch.diff = scoreDif;
+      }
     }
+  }
 
-    var scoreDiff = 0;
+  // Push surveyFriend into friends.js database
+  friends.push(surveyFriend);
 
-    // 1st Loop: Loop through all friends to check for best match 
-    for (var i = 0; i < friends.length; i++) {
-
-        scoreDif = 0;
-
-        // 2nd Loop: Loop through each friend's scores and check against surveyFriend
-        for (var j = 0; j < friends[i].scores[j]; j++) {
-
-            // Calculate the difference between survey scores and friend scores
-            scoreDif += Math.abs(parseInt(surveyScores[j]) - parseInt(friends[i].scores[j]));
-
-            // If the sum of differences is less then the differences of the current "best match"
-            if (scoreDif <= bestMatch.diff) {
-
-                // Replace bestMatch with current friend
-                bestMatch.name = friends[i].name;
-                bestMatch.diff = scoreDif;
-            }
-        }
-    }
-
-    // Push surveyFriend into friends.js database
-    friends.friends.push(surveyFriend);
-
-    // Return bestMatch json for home.html modal
-    res.json(bestMatch);
+  // Return bestMatch json for home.html modal
+  res.json(bestMatch);
 })
+
+module.exports = app;
